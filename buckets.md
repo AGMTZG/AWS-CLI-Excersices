@@ -352,3 +352,11 @@ aws s3api put-object-acl --bucket <your bucket name> --acl authenticated-users
 
 </p>
 </details>
+
+# Grant permissions to an specific user
+
+- grant-read	 →  Allows reading the object
+- grant-write	 →  Allows writing (buckets only)
+- grant-read-acp	→  Allows reading the ACLs
+- grant-write-acp	→  Allows modifying the ACLs
+- grant-full-control	→  Grants all of the above permissions

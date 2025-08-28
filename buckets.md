@@ -577,7 +577,7 @@ aws s3api put-bucket-versioning --bucket <your bucket name> --versioning-configu
 </p>
 </details>
 
-### View versioning in your bucket
+### Check whether versioning is enabled, suspended, or not configured for your S3 bucket
 
 ---
 
@@ -587,6 +587,36 @@ aws s3api put-bucket-versioning --bucket <your bucket name> --versioning-configu
 
 ```bash
 aws s3api get-bucket-versioning --bucket mi-bucket
+```
+
+</p>
+</details>
+
+### List versions of an object in your S3 bucket
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api list-object-versions --bucket <your bucket name> --prefix index.html
+```
+
+</p>
+</details>
+
+### Restore a previous version of an object in your S3 bucket
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api copy-object --bucket <your bucket name> --copy-source <your bucket name>/<file>?versionId=<version-id> --key <file>
 ```
 
 </p>

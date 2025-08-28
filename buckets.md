@@ -355,7 +355,7 @@ or
 </p>
 </details>
 
-### Grant full public access and control to a bucket
+### Allow anyone to read existing objects and upload new objects to a bucket.
 
 ---
 
@@ -386,7 +386,7 @@ aws s3api put-object-acl --bucket <your bucket name> --key index.html --acl buck
 </p>
 </details>
 
-### Grant the owner full control of an object
+### Give the bucket owner full control of the object.
 
 ---
 

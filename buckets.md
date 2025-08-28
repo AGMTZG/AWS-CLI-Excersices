@@ -530,7 +530,7 @@ aws s3api put-bucket-acl --bucket <your bucket name> --grant-write 'URI="http://
 </p>
 </details>
 
-### Combine multiple grants
+### Combine multiple grants by giving read permissions to an user and full control to another user
 
 ---
 

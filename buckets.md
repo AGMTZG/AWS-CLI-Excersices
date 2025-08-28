@@ -325,6 +325,26 @@ aws s3api create-bucket --bucket <your bucket name> --acl public-write
   
 ```bash
 aws s3api create-bucket --bucket <your bucket name> --acl private
+or
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Deny",
+            "Principal": "*",
+            "Action": "s3:*",
+            "Resource": [
+                "arn:aws:s3:::mi-bucket",
+                "arn:aws:s3:::mi-bucket/*"
+            ],
+            "Condition": {
+                "StringNotEquals": {
+                    "aws:PrincipalArn": "arn:aws:iam::<userid>:root"
+                }
+            }
+        }
+    ]
+}
 ```
 
 </p>

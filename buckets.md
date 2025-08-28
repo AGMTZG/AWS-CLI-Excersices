@@ -400,7 +400,7 @@ aws s3api put-bucket-acl --bucket <your bucket name> --grant-write 'URI="http://
 </p>
 </details>
 
-# Grant permissions to an specific user
+# Grant permissions to an specific user (Note: The grant permissions only works with canonical users (Root users, not IAM users))
 
 - grant-read	 →  Allows reading the object
 - grant-write	 →  Allows writing (buckets only)
@@ -408,3 +408,90 @@ aws s3api put-bucket-acl --bucket <your bucket name> --grant-write 'URI="http://
 - grant-write-acp	→  Allows modifying the ACLs
 - grant-full-control	→  Grants all of the above permissions
 
+### Get the canonical user id from the buckets
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api list-buckets --query "Owner.ID" --output text
+```
+
+</p>
+</details>
+
+### Grant to another AWS account READ access to an object
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api put-object-acl --bucket <your bucket name> --key <file> --grant-read 'id=<user id>'
+```
+
+</p>
+</details>
+
+Grant to another AWS account FULL CONTROL to an object
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api put-object-acl --bucket <your bucket name> --key <file> --grant-full-control 'id=<userid>'
+```
+
+</p>
+</details>
+
+### Grant to another aws account the ability to change ACLs
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api put-object-acl --bucket <your bucket name> --key <file> --grant-write-acp 'id=<user id>'
+```
+
+</p>
+</details>
+
+### Grant WRITE access to a bucket
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api put-bucket-acl --bucket <your bucket name> --grant-write 'id=<user id>'
+```
+
+</p>
+</details>
+
+### Combine multiple grants
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3api put-object-acl --bucket <your bucket name> --key <file> --grant-read 'id=<user id 1>' --grant-full-control 'id=<user id 2>'
+```
+
+</p>
+</details>

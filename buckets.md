@@ -385,7 +385,7 @@ aws s3api put-object-acl --bucket <your bucket name> --key index.html --acl aws-
 </p>
 </details>
 
-### Give S3 log delivery group access to a bucket (To enable logging)
+### Give S3 log delivery group access to a bucket (To enable logging). (The S3 log delivery group is a special AWS group that allows S3 to automatically deliver log files to your bucket)
 
 ---
 
@@ -622,6 +622,15 @@ aws s3api create-bucket --bucket <your bucket name> --region us-east-1
 
 ```bash
 aws s3api put-bucket-logging --bucket <your bucket name> --bucket-logging-status file://logging.json
+# Logging can include cross region replication
+aws s3api put-bucket-logging \
+    --bucket <your bucket name> \
+    --bucket-logging-status '{
+        "LoggingEnabled": {
+            "TargetBucket": "logs-bucket",
+            "TargetPrefix": "<your bucket name>-logs/"
+        }
+    }'
 ```
 
 </p>

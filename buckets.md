@@ -100,21 +100,6 @@ aws s3 cp index.html s3://<your bucket name>
 <p>
 
 ```bash
-aws s3 ls s3://<your bucket name>
-```
-
-</p>
-</details>
-
-### List all objects in your s3 bucket using a recursive list(Including folders and subfolders)
-
----
-
-<details>
-<summary>Show commands / answers</summary>
-<p>
-
-```bash
 aws s3 ls s3://<your bucket name> --recursive
 ```
 
@@ -176,6 +161,21 @@ aws s3 cp s3://<your bucket name>/folder ./folder --recursive
 
 ```bash
 aws s3 sync ./ s3://<your bucket name>/
+```
+
+</p>
+</details>
+
+### Sync all the files from a bucket to another bucket
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws s3 sync s3://<your bucket source>  s3://<your bucket destination>
 ```
 
 </p>

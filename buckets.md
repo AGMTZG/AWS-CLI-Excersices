@@ -278,6 +278,21 @@ aws s3api put-bucket-policy --bucket mi-bucket --policy '{"Version":"2012-10-17"
 </p>
 </details>
 
+### View the acl from the recent uploaded object
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+  
+```bash
+aws s3api get-object-acl --bucket <your bucket name> --key <your file route>
+```
+
+</p>
+</details>
+
 ### Create an S3 bucket with public write permissions
 
 ---

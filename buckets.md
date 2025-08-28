@@ -232,7 +232,7 @@ aws s3 rm s3://<your bucket name> --recursive
 
 Note: It’s actually not recommended to use ACL permissions on buckets, but it’s worth learning them anyway.
 
-## Basic permissions
+## Basic ACL permissions
 
 - READ → Allows reading the object or listing the bucket.
 
@@ -243,6 +243,13 @@ Note: It’s actually not recommended to use ACL permissions on buckets, but it�
 - WRITE_ACP → Allows modifying the ACL configuration.
 
 - FULL_CONTROL → Allows all of the above.
+
+## Policies
+
+- s3:GetObject
+- s3:PutObject
+- s3:DeleteObject
+- s3:ListObject
 
 ### List all permissions in your s3 bucket
 

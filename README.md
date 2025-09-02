@@ -4,6 +4,8 @@
 
 - docker run --rm -it -p 4566:4566 -p 4571:4571 localstack/localstack
 
+Note: Keep in mind that you will need another instance of the terminal.
+
 Or you can use docker-compose for more fleixibility:
 
 ```bash

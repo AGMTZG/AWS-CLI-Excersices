@@ -135,7 +135,7 @@ aws ec2 describe-key-pairs
 
 # Information of you EC2 instance
 
-### Find the Instance ID of the EC2 instance
+### Find the Instance ID of a specific EC2 instance in your AWS account
 
 ---
 
@@ -150,7 +150,7 @@ aws ec2 describe-instances --query "Reservations[*].Instances[*].[InstanceId,Tag
 </p>
 </details>
 
-### Find the VPC ID of the EC2 instance
+### Find the VPC ID associated with a specific EC2 instance in your AWS account
 
 ---
 
@@ -165,7 +165,7 @@ aws ec2 describe-instances --instance-ids <INSTANCE_ID> --query "Reservations[0]
 </p>
 </details>
 
-### Find the Subnet ID of the EC2 instance
+### Find the Subnet ID associated with a specific EC2 instance in your AWS account
 
 ---
 
@@ -180,7 +180,7 @@ aws ec2 describe-instances --instance-ids <INSTANCE_ID> --query "Reservations[0]
 </p>
 </details>
 
-### Find the Security Group ID attached to your EC2 instance
+### Find the Security Group ID(s) attached to a specific EC2 instance in your AWS account
 
 ---
 
@@ -195,6 +195,52 @@ aws ec2 describe-instances --instance-ids <INSTANCE_ID> --query "Reservations[0]
 </p>
 </details>
 
+### Retrieve the public IP address of a specific EC2 instance
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+  
+```bash
+aws ec2 describe-instances --instance-ids <INSTANCE_ID> --query "Reservations[0].Instances[0].PublicIpAddress" --output text
+```
+
+</p>
+</details>
+
+### Retrieve the private IP address of a specific EC2 instance
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+  
+```bash
+aws ec2 describe-instances --instance-ids <instance-id> --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text
+```
+
+</p>
+</details>
+
+### Retrieve the public DNS of a specific EC2 instance
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+  
+```bash
+aws ec2 describe-instances --instance-ids <instance-id> --query 'Reservations[*].Instances[*].PublicDnsName' --output text
+```
+
+</p>
+</details>
+
+# Security Groups
 
 ### List all Security Groups
 
@@ -224,21 +270,6 @@ aws ec2 create-security-group \
   --group-name MySG \
   --description "My security group" \
   --vpc-id <vpc-id>
-```
-
-</p>
-</details>
-
-### Retrieve the public IP address of a specific EC2 instance
-
----
-
-<details>
-<summary>Show commands / answers</summary>
-<p>
-  
-```bash
-aws ec2 describe-instances --instance-ids <INSTANCE_ID> --query "Reservations[0].Instances[0].PublicIpAddress" --output text
 ```
 
 </p>
@@ -509,36 +540,6 @@ aws ec2 unmonitor-instances --instance-ids <instance-id>
 </details>
 
 # Miscellaneous
-
-### Get public DNS of an instance
-
----
-
-<details>
-<summary>Show commands / answers</summary>
-<p>
-  
-```bash
-aws ec2 describe-instances --instance-ids <instance-id> --query 'Reservations[*].Instances[*].PublicDnsName' --output text
-```
-
-</p>
-</details>
-
-### Get private IP of an instance
-
----
-
-<details>
-<summary>Show commands / answers</summary>
-<p>
-  
-```bash
-aws ec2 describe-instances --instance-ids <instance-id> --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text
-```
-
-</p>
-</details>
 
 ### Create snapshot of a volume
 

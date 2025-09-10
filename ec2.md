@@ -38,7 +38,7 @@ aws ec2 run-instances \
 </p>
 </details>
 
-### Start a stopped EC2 instance to make it running and accessible
+### Start a stopped EC2 instance
 
 ---
 
@@ -53,7 +53,7 @@ aws ec2 start-instances --instance-ids <instance-id>
 </p>
 </details>
 
-### Stop a running EC2 instance to temporarily shut it down while preserving its configuration
+### Stop a running EC2 instance
 
 ---
 
@@ -68,7 +68,7 @@ aws ec2 stop-instances --instance-ids <instance-id>
 </p>
 </details>
 
-### Reboot a running EC2 instance to restart it without changing its configuration or losing data
+### Reboot a running EC2 instance
 
 ---
 
@@ -242,7 +242,7 @@ aws ec2 describe-instances --instance-ids <instance-id> --query 'Reservations[*]
 
 # Security Groups
 
-### List all Security Groups in your AWS account to view their IDs, names, and associated rules
+### List all Security Groups in your AWS account
 
 ---
 
@@ -257,7 +257,7 @@ aws ec2 describe-security-groups
 </p>
 </details>
 
-### Create a new Security Group in your AWS account to define network access rules for your resources
+### Create a new Security Group in your AWS account
 
 ---
 

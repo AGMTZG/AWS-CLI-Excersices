@@ -844,6 +844,30 @@ aws s3api put-object --bucket <your bucket name> --key <file> --body ./<file loc
 
 ```bash
 aws s3api put-bucket-lifecycle-configuration --bucket <your bucket name> --lifecycle-configuration file://lifecycle.json
+
+# lifecycle.json
+{
+  "Rules": [
+    {
+      "ID": "MoveToGlacierAndExpire",
+      "Status": "Enabled",
+      "Filter": {
+        "Prefix": "" 
+      },
+      "Transitions": [
+        {
+          "Days": 30,
+          "StorageClass": "GLACIER"
+        }
+      ],
+      "Expiration": {
+        "Days": 365
+      }
+    }
+  ]
+}
+
+
 ```
 
 </p>
@@ -859,6 +883,34 @@ aws s3api put-bucket-lifecycle-configuration --bucket <your bucket name> --lifec
 
 ```bash
 aws s3api put-bucket-lifecycle-configuration --bucket <your bucket name> --lifecycle-configuration file://lifecycle-standard-ia.json
+
+# lifecycle-standard-ia
+{
+  "Rules": [
+    {
+      "ID": "TransitionAndExpire",
+      "Status": "Enabled",
+      "Filter": {
+        "Prefix": "" 
+      },
+      "Transitions": [
+        {
+          "Days": 60,
+          "StorageClass": "STANDARD_IA"
+        },
+        {
+          "Days": 90,
+          "StorageClass": "GLACIER"
+        }
+      ],
+      "Expiration": {
+        "Days": 365
+      }
+    }
+  ]
+}
+
+
 ```
 
 </p>
@@ -874,6 +926,24 @@ aws s3api put-bucket-lifecycle-configuration --bucket <your bucket name> --lifec
 
 ```bash
 aws s3api put-bucket-lifecycle-configuration --bucket <your bucket name> --lifecycle-configuration file://lifecycle-expire.json
+
+# lifecycle-expire.json
+{
+  "Rules": [
+    {
+      "ID": "AutoDelete365Days",
+      "Status": "Enabled",
+      "Filter": {
+        "Prefix": ""
+      },
+      "Expiration": {
+        "Days": 365
+      }
+    }
+  ]
+}
+
+
 ```
 
 </p>

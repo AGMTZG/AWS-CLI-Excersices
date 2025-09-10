@@ -246,10 +246,10 @@ Note: It’s actually not recommended to use ACL permissions on buckets, but it�
 
 ## Policies
 
-- s3:GetObject → Lecture permissions
+- s3:GetObject → Read permissions
 - s3:PutObject → Uploading permissions
 - s3:DeleteObject →  Deleting permissions
-- s3:DeleteObjectVersion → Delete specefic version permissions
+- s3:DeleteObjectVersion → Delete specific version permissions.
 - s3:ListObject →  Get objects permissions
 - s3:ListBucketVersions → Get versions of bucket
 - s3:ListBucketMultipartUploads → Check large uploaded files 
@@ -791,17 +791,15 @@ aws s3api abort-multipart-upload --bucket <your bucket name> --key <file> --uplo
 
 Storage classes(You assign a storage class when uploading objects):
 
-- STANDARD → frequent access storage, more expensive.
+| Class                | Description                          |
+| -------------------- | ------------------------------------ |
+| STANDARD             | Frequent access, higher cost         |
+| STANDARD\_IA         | Infrequent access, lower cost        |
+| ONEZONE\_IA          | Infrequent access, single AZ         |
+| GLACIER              | Long-term archive, slow retrieval    |
+| DEEP\_ARCHIVE        | Very long-term archive, minimal cost |
+| INTELLIGENT\_TIERING | Automatic tiering based on access    |
 
-- STANDARD_IA → infrequent access, cheaper, designed for objects that are rarely accessed.
-
-- GLACIER → long-term archiving, cheaper, slower retrieval.
-
-- DEEP_ARCHIVE → very long-term archiving, minimal cost, even slower retrieval.
-
-- ONEZONE_IA → Infrequent access
-
-- INTELLIGENT_TIERING  → automatically moves objects between tiers based on access patterns.
 
 ### Upload an object using storage class STANDARD_IA
 

@@ -100,7 +100,7 @@ aws ec2 terminate-instances --instance-ids <instance-id>
 
 # Key Pairs
 
-### Create a new key pair
+### Create a New Key Pair and Connect to an EC2 Instance
 
 ---
 
@@ -111,6 +111,8 @@ aws ec2 terminate-instances --instance-ids <instance-id>
 ```bash
 aws ec2 create-key-pair --key-name MyKey --query 'KeyMaterial' --output text > MyKey.pem
 chmod 400 MyKey.pem
+
+ssh -i MyKey.pem <AMi>/<public-instance-ip>
 ```
 
 </p>

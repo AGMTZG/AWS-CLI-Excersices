@@ -133,6 +133,22 @@ aws ec2 describe-key-pairs
 </p>
 </details>
 
+### Delete a key pair
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+  
+```bash
+aws ec2 delete-key-pair --key-name <your key>
+```
+
+</p>
+</details>
+
+
 # Information of you EC2 instance
 
 ### Find the Instance ID of a specific EC2 instance in your AWS account

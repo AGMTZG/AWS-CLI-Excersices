@@ -310,7 +310,7 @@ aws iam simulate-principal-policy \
 </p>
 </details>
 
-## Example admin policy (full access)
+## Example trust policy (full access)
 
 ```bash
 {
@@ -325,6 +325,15 @@ aws iam simulate-principal-policy \
 }
 ```
 
+## Example permission policy
+
+```bash
+{
+  "Effect": "Allow",
+  "Action": "*",
+  "Resource": "*"
+}
+```
 
 
 

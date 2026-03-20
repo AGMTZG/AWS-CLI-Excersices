@@ -259,6 +259,48 @@ aws iam add-user-to-group \
 </p>
 </details>
 
+## List all groups
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws iam list-groups
+```
+</p>
+</details>
+
+## List all groups for a user
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws iam list-groups-for-user --user-name <your user>
+```
+</p>
+</details>
+
+## List all users in a group
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws iam get-group --group-name <your group>
+```
+</p>
+</details>
+
 ## Attach policy to group
 
 ---

@@ -253,3 +253,37 @@ Placement Groups = control whether your instances are:
 - close (performance)
 - separated (resilience)
 - grouped (balance)
+
+# 🧠 Elastic Network Interface (ENI) – Simple Explanation
+
+## What is an ENI?
+> A **virtual network card** in AWS.
+
+👉 It connects your EC2 instance to the network (VPC).
+
+---
+
+## 🔹 What an ENI includes
+- Private IP  
+- (Optional) Public IP  
+- Security Groups  
+- MAC address  
+- Subnet  
+
+👉 Basically: all networking configuration
+
+---
+
+## 🔹 Easy way to think about it
+
+- EC2 = the computer  
+- ENI = its **network card (NIC)**  
+
+---
+
+## 🔹 What is it used for?
+
+### ✅ Use cases
+- Connect instances to a VPC  
+- Move network configuration between instances  
+- Attach multiple network interfaces to one EC2  

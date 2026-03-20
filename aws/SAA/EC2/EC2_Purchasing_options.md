@@ -203,10 +203,16 @@ They let you **control how AWS physically places your EC2 instances** on hardwar
 
 ## 🔹 Types
 
-### 1. Cluster
+### 1. Cluster (close together = fast)
 - Instances are **very close together**
 - 🔥 Low latency, high throughput  
-- Use case: HPC, intensive workloads  
+- Use case: HPC, intensive workloads
+
+### Real use cases:
+- HPC (High Performance Computing)
+- Financial trading systems
+- Distributed computing jobs
+- In-memory workloads
 
 ---
 
@@ -215,12 +221,22 @@ They let you **control how AWS physically places your EC2 instances** on hardwar
 - 🛡️ High fault tolerance  
 - Use case: critical applications  
 
+### Real use cases:
+- Critical applications
+- Small number of important instances
+- Systems where failure is not acceptable
+
 ---
 
 ### 3. Partition
 - Instances are grouped into **isolated partitions**
 - ⚖️ Balance between performance and resilience  
 - Use case: big data (Hadoop, Kafka)
+
+### Real use cases:
+- Big Data (Hadoop, Spark)
+- Kafka clusters
+- Cassandra / NoSQL clusters
 
 ---
 

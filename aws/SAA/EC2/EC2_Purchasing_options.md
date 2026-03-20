@@ -95,4 +95,100 @@ Ask yourself:
 
 1. Is usage predictable?  
 2. Can the workload be interrupted?  
-3. Do I need guaranteed capacity or compliance?  
+3. Do I need guaranteed capacity or compliance?
+
+## 🔹 Spot Instance Requests
+- Up to **90% cheaper** than On-Demand  
+- You define a **max price**  
+- The instance runs while: **spot_price < max_price**
+  - Price **fluctuates dynamically** (supply/demand)
+
+### ⛔ Interruptions
+- If: **spot_price > max_price**
+→ AWS may:
+- stop
+- terminate
+
+- You get a **2-minute warning**
+
+### 🧠 Typical Use Cases
+- Batch jobs  
+- Data processing  
+- Fault-tolerant workloads  
+
+### ❌ Not suitable for
+- Databases  
+- Critical systems
+
+## 🔹 Spot Fleet
+> A set of Spot Instances (+ optional On-Demand Instances)
+
+- Define a **target capacity**
+- AWS fulfills it using multiple pools
+
+### 🔧 You can define:
+- Instance types (e.g., `m5.large`)
+- Availability Zones
+- OS
+- Multiple pools
+
+### 🧠 Behavior
+- AWS selects instances based on:
+- price
+- available capacity
+
+- Stops launching when:
+- target capacity is reached
+- max cost is reached
+
+---
+
+## ⚙️ Allocation Strategies
+
+- **lowestPrice**  
+→ cheapest  
+→ less stable  
+
+- **diversified**  
+→ spread across pools  
+→ higher availability  
+
+- **capacityOptimized**  
+→ prioritizes pools with capacity  
+
+- **priceCapacityOptimized (RECOMMENDED)**  
+→ balances price + capacity  
+
+---
+
+## 🔹 Spot Block (Legacy ⚠️)
+> Not commonly used anymore
+
+- “Reserve” Spot for:
+- 1 to 6 hours  
+- **No interruptions** during that window (in most cases)
+- May still be reclaimed in rare situations
+
+### 🧠 Typical Use Cases (historical)
+- Short batch jobs  
+- Time-bound processing workloads  
+
+---
+
+## 🧩 What is each concept?
+
+| Concept              | Description |
+|----------------------|------------|
+| Spot Instance        | Discounted instance type |
+| Spot Request         | Individual Spot request |
+| Spot Fleet           | Managed group of Spot instances |
+| Spot Block           | Legacy fixed-duration Spot |
+
+---
+
+## ⚡ TL;DR
+- `run-instances` → On-Demand  
+- Spot → cheaper but interruptible  
+- Spot Fleet → automated orchestration  
+- Spot Block → legacy, mostly ignore   
+  

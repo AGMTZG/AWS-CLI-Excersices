@@ -333,6 +333,20 @@ aws iam attach-group-policy \
 </p>
 </details>
 
+## List Attached policies to group
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+
+```bash
+aws iam list-attached-group-policies --group-name <your group>
+```
+</p>
+</details>
+
 ## Create a role
 
 ---

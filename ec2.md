@@ -710,6 +710,8 @@ aws elb describe-load-balancers
 
 ### List all classic load balancers
 
+---
+
 <details>
 <summary>Show commands / answers</summary>
 <p>
@@ -813,7 +815,6 @@ aws elbv2 create-listener \
 </p>
 </details>
 
-
 ### List all your new generation of load balancers
 
 ---
@@ -839,6 +840,122 @@ aws elbv2 describe-load-balancers
   
 ```bash
 aws elbv2 describe-target-groups
+```
+
+</p>
+</details>
+
+## Network load balancers
+
+### Create a network load balancer
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+  
+```bash
+aws elbv2 create-load-balancer \
+  --name <your load balancer name> \
+  --type network \
+  --subnets subnet-123 subnet-456
+```
+
+</p>
+</details>
+
+
+### Create a tcp target group
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+  
+```bash
+aws elbv2 create-target-group \
+  --name <your target group name> \
+  --protocol TCP \
+  --port 80 \
+  --vpc-id vpc-xxx
+```
+
+</p>
+</details>
+
+
+### Create a Listener for the target group you just created
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+  
+```bash
+aws elbv2 create-listener \
+  --load-balancer-arn <lb-arn> \
+  --protocol TCP \
+  --port 80 \
+  --default-actions Type=forward,TargetGroupArn=<tg-arn>
+```
+
+</p>
+</details>
+
+## Gateway load balancer
+
+### Create a gateway load balancer
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+  
+```bash
+aws elbv2 create-load-balancer \
+  --name <your load balancer name> \
+  --type gateway \
+  --subnets subnet-xxx subnet-xxx
+```
+
+</p>
+</details>
+
+### Create Target Group (GENEVE)
+
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+  
+```bash
+aws elbv2 create-target-group \
+  --name <your target group name> \
+  --protocol GENEVE \
+  --port 6081 \
+  --vpc-id vpc-xxx
+```
+
+</p>
+</details>
+
+
+### Register Targets to the target group you just created
+---
+
+<details>
+<summary>Show commands / answers</summary>
+<p>
+  
+```bash
+aws elbv2 register-targets \
+  --target-group-arn <tg-arn> \
+  --targets Id=i-xxx
 ```
 
 </p>

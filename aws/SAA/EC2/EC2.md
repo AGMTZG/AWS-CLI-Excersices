@@ -280,101 +280,196 @@ AWS has deprecated this feature for new customers. It still appears on the exam 
 
 ---
 
-# 🧠 AWS Placement Groups – Simple Explanation
+# EC2 Placement Groups & Elastic Network Interfaces
 
-## What are Placement Groups for?
-They let you **control how AWS physically places your EC2 instances** on hardware.
-
-👉 Basically: you decide if instances should be **close together or far apart**
+> Two features that give you explicit control over *where* your instances live (Placement Groups)
+> and *how* they connect to the network (ENI).
 
 ---
 
-## 🔹 Types
+# Placement Groups
+> *"I want to control how AWS physically places my instances on hardware"*
 
-### 1. Cluster (close together = fast)
-- Instances are **very close together**
-- 🔥 Low latency, high throughput  
-- Use case: HPC, intensive workloads
-
-### Real use cases:
-- HPC (High Performance Computing)
-- Financial trading systems
-- Distributed computing jobs
-- In-memory workloads
+By default, AWS places instances wherever capacity is available.
+Placement Groups let you override that — either pulling instances **closer together** or **pushing them apart** — depending on what your workload needs.
 
 ---
 
-### 2. Spread
-- Instances are **placed on different hardware**
-- 🛡️ High fault tolerance  
-- Use case: critical applications  
+## Cluster
+> *"I need the lowest possible latency between instances"*
 
-### Real use cases:
-- Critical applications
-- Small number of important instances
-- Systems where failure is not acceptable
+All instances are packed onto hardware within the **same rack, same AZ**.
+This gives you the fastest possible network between them: up to **10 Gbps** bandwidth with Enhanced Networking.
 
----
+**The tradeoff:** if the rack fails, all instances fail together.
 
-### 3. Partition
-- Instances are grouped into **isolated partitions**
-- ⚖️ Balance between performance and resilience  
-- Use case: big data (Hadoop, Kafka)
+### How it works
+```
+[ Rack A          ]
+  [i-1] [i-2] [i-3]   ← all on the same physical rack
+```
 
-### Real use cases:
-- Big Data (Hadoop, Spark)
-- Kafka clusters
-- Cassandra / NoSQL clusters
+### Use cases
+- **HPC (High Performance Computing):** tightly coupled jobs where nodes constantly exchange data (MPI workloads)
+- **Financial trading systems:** microsecond-level latency between services
+- **In-memory distributed computing:** Spark jobs where shuffle speed is the bottleneck
+- **Video encoding pipelines:** large files transferred between nodes at high throughput
 
----
+### Exam signals
+- Question mentions "lowest latency", "high throughput between instances", or "tightly coupled" → Cluster
+- Question mentions "same AZ" as a constraint → likely Cluster
+- ⚠️ If the question also mentions "fault tolerance" → Cluster is the wrong answer
 
-## 🧠 Easy way to remember
-
-- **Cluster** → close = fast  
-- **Spread** → separate = safe  
-- **Partition** → grouped = balanced  
+Pros: Best network performance between instances  
+Cons: Single point of failure at the rack level; all instances must be in the same AZ
 
 ---
 
-## ⚡ TL;DR
-Placement Groups = control whether your instances are:
-- close (performance)
-- separated (resilience)
-- grouped (balance)
+## Spread
+> *"I have a small number of critical instances that must never fail together"*
 
-# 🧠 Elastic Network Interface (ENI) – Simple Explanation
+Each instance is placed on **separate underlying hardware** — different racks, different power sources, different network paths.
 
-## What is an ENI?
-> A **virtual network card** in AWS.
+**Hard limit: 7 instances per AZ per placement group.**
+This limit is intentional — it forces you to keep the group small and truly critical.
 
-👉 It connects your EC2 instance to the network (VPC).
+### How it works
+```
+AZ us-east-1a
+  Rack A → [i-1]
+  Rack B → [i-2]
+  Rack C → [i-3]   ← each on isolated hardware
+```
+
+### Use cases
+- **Primary/secondary database pairs:** if one host fails, the standby is on different hardware
+- **ZooKeeper or etcd quorum nodes:** losing two nodes at once would break consensus
+- **Active-passive application tiers:** the failover instance must survive the same hardware failure that took down the primary
+- **Small fleets of critical instances** where each one matters individually
+
+### Exam signals
+- Question mentions "maximum fault isolation", "individual instances", or a small count (≤7) of critical instances → Spread
+- Question mentions "different hardware per instance" → Spread
+- ⚠️ If you need more than 7 instances per AZ → Spread won't work, use Partition
+
+Pros: Maximum fault isolation; each instance is on independent hardware  
+Cons: Hard cap of 7 instances per AZ; not suitable for large-scale deployments
 
 ---
 
-## 🔹 What an ENI includes
-- Private IP  
-- (Optional) Public IP  
-- Security Groups  
-- MAC address  
-- Subnet  
+## Partition
+> *"I have a large distributed system and I need fault isolation at the group level, not per instance"*
 
-👉 Basically: all networking configuration
+Instances are divided into **logical partitions** (up to 7 per AZ). Each partition runs on its own set of racks — isolated from other partitions. Instances within the same partition may share hardware.
+
+You can have **hundreds of instances** across partitions. AWS exposes the partition number to your application via instance metadata, so your software can be partition-aware.
+
+### How it works
+```
+AZ us-east-1a
+  Partition 1 → [i-1] [i-2] [i-3]   ← shared rack, isolated from P2
+  Partition 2 → [i-4] [i-5] [i-6]   ← separate rack
+  Partition 3 → [i-7] [i-8] [i-9]   ← separate rack
+```
+
+### Use cases
+- **Hadoop / HDFS:** replicas are placed in different partitions so a rack failure doesn't lose all copies of a block
+- **Kafka brokers:** partition leaders and followers spread across physical racks for durability
+- **Cassandra clusters:** replication strategy maps to physical partitions for rack-aware placement
+- **HBase, Accumulo:** same pattern — large clusters that need rack-level fault isolation
+
+### Exam signals
+- Question mentions "large distributed systems", "rack-aware", "Hadoop", "Kafka", or "Cassandra" → Partition
+- Question mentions "hundreds of instances" with fault isolation → Partition (not Spread)
+- Question asks about accessing partition metadata → only Partition exposes this
+
+Pros: Scales to hundreds of instances; rack-level fault isolation; partition-aware apps  
+Cons: Instances within a partition still share hardware; not full per-instance isolation like Spread
 
 ---
 
-## 🔹 Easy way to think about it
+## Quick Comparison
 
-- EC2 = the computer  
-- ENI = its **network card (NIC)**  
+| | Cluster | Spread | Partition |
+|---|---|---|---|
+| Goal | Performance | Isolation per instance | Isolation per group |
+| Max instances | No hard limit (same AZ) | 7 per AZ | Hundreds, up to 7 partitions/AZ |
+| Failure domain | Entire group (same rack) | Independent per instance | Per partition (rack) |
+| Typical workload | HPC, low-latency | Small critical systems | Large distributed systems |
+| Multi-AZ support | ❌ | ✅ | ✅ |
 
 ---
 
-## 🔹 What is it used for?
+# Elastic Network Interface (ENI)
+> *"A virtual network card you can attach, detach, and move between EC2 instances"*
 
-### ✅ Use cases
-- Connect instances to a VPC  
-- Move network configuration between instances  
-- Attach multiple network interfaces to one EC2
+Every EC2 instance has at least one ENI. It's the object that holds all network configuration — the instance itself is just compute. The networking lives in the ENI.
+
+---
+
+## What an ENI contains
+
+| Attribute | Notes |
+|---|---|
+| Primary private IPv4 | Fixed for the ENI's lifetime |
+| One or more secondary private IPs | Useful for hosting multiple services on one instance |
+| Public IPv4 (optional) | Assigned from AWS pool; changes on stop/start unless Elastic IP |
+| Elastic IP (optional) | Static public IP, attached per private IP |
+| IPv6 address (optional) | |
+| Security Groups | Attached at the ENI level, not the instance level |
+| MAC address | Fixed to the ENI — survives instance replacement |
+| Source/destination check flag | Disable this on NAT instances and routers |
+
+---
+
+## Key behaviors
+
+**ENIs are independent objects.** You can:
+- Create an ENI without an instance
+- Attach it to an instance
+- Detach it and re-attach it to a different instance — with all its IPs, security groups, and MAC address intact
+
+**This is the core exam mechanic:** moving an ENI between instances moves its entire network identity.
+
+**ENIs are AZ-scoped.** An ENI created in `us-east-1a` can only attach to instances in `us-east-1a`.
+
+---
+
+## Use cases
+
+### Failover with IP preservation
+Your primary instance fails. You detach its ENI and attach it to a standby instance.
+The standby now has the same private IP, same Elastic IP, same MAC address — no DNS changes, no client reconfiguration needed.
+
+**Exam scenario:** "How do you fail over an EC2 instance while preserving its IP address?" → Move the ENI.
+
+### License-locked software (MAC-based licensing)
+Some software licenses are tied to the MAC address of the NIC.
+Since the MAC address lives on the ENI — not the instance — you can replace the underlying EC2 instance without invalidating the license. Just move the ENI.
+
+**Exam scenario:** "A software license is bound to a MAC address. The instance needs to be replaced. How?" → Detach ENI, attach to new instance.
+
+### Multiple network interfaces on one instance
+Attach a second ENI to an instance to connect it to two subnets simultaneously.
+Common for:
+- **Network appliances** (firewalls, NAT, proxies) that need one interface on a public subnet and one on a private subnet
+- **Dual-homed instances** that serve traffic on two separate VPCs or security zones
+
+### Management network separation
+Attach a dedicated ENI on a management subnet (with its own security group, stricter rules) for SSH/admin access, separate from the ENI handling application traffic.
+
+---
+
+## Exam signals
+
+- "Preserve IP after instance replacement" → move the ENI
+- "MAC-based software license on EC2" → move the ENI
+- "Instance needs interfaces in two subnets" → attach a second ENI
+- "Security group applied at instance level" → technically wrong; security groups attach to ENIs
+- "Source/destination check" → disable on NAT instances; this flag lives on the ENI
+
+Pros: Portable network identity; enables failover, multi-homing, and license portability  
+Cons: AZ-scoped; can't move an ENI across AZs or regions
 
 # EC2 Volumes
 

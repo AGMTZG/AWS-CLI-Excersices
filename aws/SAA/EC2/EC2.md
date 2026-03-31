@@ -1,3 +1,46 @@
+# EC2 — Elastic Compute Cloud
+
+> AWS's virtual machine service. You rent compute capacity in the cloud instead of buying physical servers.
+
+---
+
+## What it is
+
+An EC2 instance is a **virtual server** running on AWS hardware.
+You choose the OS, CPU, RAM, storage, and network — AWS manages the physical infrastructure underneath.
+
+## What you control
+
+- **Instance type** — defines CPU, RAM, and network bandwidth (e.g., `t3.micro`, `m5.xlarge`, `c6i.2xlarge`)
+- **AMI** — the OS and software image the instance boots from
+- **Storage** — EBS volumes, instance store, or EFS mounts
+- **Network** — which VPC, subnet, and security groups apply
+- **Purchasing model** — On-Demand, Reserved, Spot, etc.
+
+## Instance type families — what the letters mean
+
+| Family | Optimized for | Examples |
+|---|---|---|
+| `t` | Burstable general purpose | `t3.micro`, `t4g.small` |
+| `m` | Balanced general purpose | `m5.large`, `m6i.xlarge` |
+| `c` | Compute (CPU-heavy) | `c6i.2xlarge`, `c7g.large` |
+| `r` | Memory (RAM-heavy) | `r6i.4xlarge`, `r7g.xlarge` |
+| `i` | Storage (NVMe instance store) | `i3.large`, `i4i.xlarge` |
+| `p` / `g` | GPU (ML training, graphics) | `p4d.24xlarge`, `g5.xlarge` |
+
+## Exam signals
+
+- "Resize an instance" → stop → change instance type → start (requires EBS root volume)
+- "High CPU workload" → `c` family
+- "In-memory database (Redis, SAP HANA)" → `r` family
+- "Burstable low-cost dev instance" → `t` family
+- "EC2 is unresponsive" → check security groups, then NACL, then route table
+
+Pros: Full control over compute; integrates with every AWS service  
+Cons: You manage the OS, patching, and scaling — unlike managed services (RDS, Lambda)
+
+---
+
 # EC2 Purchasing Options — What Problem They Solve
 
 ---
